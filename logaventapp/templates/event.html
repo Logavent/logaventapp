@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if event.ispublic %}
+<div class="row wow fadeIn">
+  <div class="large-12 columns text-center padding-top-60 padding-bottom-40">
+    <h1>{{ event.title }}</h1>
+    <h6 class="alt-font red">Organised by {{ event.organiser }}</h6>
+  </div>
+</div>
+<div class="row">
+  <div class="large-8 columns padding-bottom-80">
+    <div class="featured_image_wrapper wow zoomIn" style="background-image: url('{{ MEDIA_URL }}{{ event.image }}');"></div>
+    <div class="eventpage_description wow fadeInLeft">
+      <h2>About This Event</h2>
+      <p>{{ event.description }}</p>
+      <p><i><strong>Event created on:</strong> {{ event.datetimecreated }}</i></p>
+      {% if user != event.organiser %}
+      <a data-reveal-id="register" class="button alt-font">Register for this Event</a>
+      {% else %}
+      <a href="{{ event.manageurl }}" class="button alt-font">Manage this Event</a>
+      {% endif %}
+      <h2>About The Organiser</h2>
+      <p>Event organised by {{ event.organiser }}.</p>
+      <p>
+        {{ event.organiser }} is a multinational corporation. Collaboratively administrate empowered markets via plug-and-play networks. Dynamically procrastinate B2C users after installed base benefits. Dramatically visualize customer directed convergence without revolutionary ROI.
+      </p>
+    </div>
+  </div>
+  <div class="large-4 columns padding-bottom-80 wow fadeInRight">
+    <h2>Event Information</h2>
+    <h5 class="event-stats alt"><span class="stats-text">Organised by</span><br><span class="stats-num">{{ event.organiser }}</span></h5>
+    <h5 class="event-stats alt"><span class="stats-text">Come join us on</span><br><span class="stats-num">{{ event.eventdate }}</span><span class="stats-text datetime">&nbsp;at</span><br><span class="stats-num">{{ event.eventtime }}</span></h5>
+    <h5 class="event-stats"><span class="stats-num">{{ event.pplno }}</span><br> 
+      <span class="stats-text">{% if isone %}person{% else %}people{% endif %} registered</span>
+    </h5>
+    <h5 class="event-stats"><span class="stats-num">{{ event.expectedpplno }}</span><br> <span class="stats-text">expected to turn up</span></h5><br>
+    <a data-reveal-id="register" class="button big alt-font">Register for this Event</a>
+    <div id="register" class="reveal-modal small" data-reveal>
+    <div class="row">
+      <div class="large-12 columns">
+        <h3>Register for {{event.title}}</h3>
+        <p>*you do not need to be logged in to register
+        <form id="register_form" method="post" action="{{ register_url }}">
+        {% csrf_token %}
+        <label>Name:</label>
+        <input type="text" name="name" value=""/>
+        <label>Email:</label>
+        <input type="email" name="email" value=""/>
+        <label>Handphone Number:</label>
+        <p>*optional, no longer than 8 numbers, +65 not needed<br>Makes it easier for {{event.title}} to contact you</p>
+        <input type="text" name="hpno" value=""/>
+        <button type="submit" name="submit">Register</button>
+      </form>
+      </div>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+  </div>
+  </div>
+</div>
+{% else %}
+<div class="row">
+  <div class="large-12 columns text-center padding-top-60 padding-bottom-80">
+    <h2>{{ event.title }} is a private event.</h2>
+    {% if user.username == event.organiser.username %}
+    <h6><strong>No worries, just you can manage it by clicking on the button below.</strong></h6><br>
+    <a href="{{ event.manage_url }}" class="button alt-font">Manage {{event.title}}</a>
+    {% else %}
+    <h6><strong>See other public events in Singapore by clicking on the button below.</strong></h6><br>
+    <a href="{% url 'events' %}'" class="button alt-font">Events in Singapore</a>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

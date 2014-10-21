@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="title-strip title-strip-dashboard">
+  <div class="row">
+    <h1>Dashboard</h1>
+  </div>
+</div>
+{% if user.is_authenticated %}
+<div class="row padding-top-60 padding-bottom-80">
+  <div class="large-12 columns padding-bottom-40"><h2>Create event</h2></div>
+  <div class="large-12 columns text-left">
+    <form id="event_creation_form" method="post" enctype="multipart/form-data" action="/create_event">
+      {% csrf_token %}
+      {% if errors != None %}
+      <p>Errors: {{ errors }}</p>
+      {% endif %}
+      <label>Title:</label>
+      <input type="text" name="title" value=""/>
+      <label>Description:</label>
+      <textarea name="description" cols=5 rows=3></textarea>
+      <label>Image: (preferred image size is 800x600 pixels)</label>
+      <input type="file" name="image" value=""/>
+      <label>Budget (SGD):</label>
+      <input type="number" name="budget" step="any" min="0" value=""/>
+      <label>Expected Number of People:</label>
+      <input type="number" name="expectedpplno" min="0" value=""/>
+      <label>Date:</label>
+      <input type="date" name="eventdate" value=""/>
+      <label>Time:</label>
+      <input type="time" name="eventtime" value=""/>
+      <label class="make_public_label">Make Public</label>
+      <input type="checkbox" name="ispublic" value=""/><br><br>
+      <button type="submit" name="submit" class="alt-font">Create</button>
+     </form>
+  </div>
+</div>
+{% else %}
+<div class="row">
+  <div class="large-12 columns text-center padding-top-60 padding-bottom-80">
+    <h2>Hey... it seems like you aren't logged in.</h2>
+    <h6><strong>No worries, just you can login or signup by clicking on the button below.</strong></h6><br>
+    <a data-reveal-id="signup-login" class="alt-font button big">Login or Signup</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

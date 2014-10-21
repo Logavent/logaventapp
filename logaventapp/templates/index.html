@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %} 
+	<div id="header-full-width" data-speed="2.5">
+    	<div class="header-inner wow fadeIn">
+            <div class="row text-center">
+                <h1 class="header-title">Events in Singapore</h1>
+                <p class="header-subtitle">Logavent is the best web-app to find out about the latest events in Singapore and handle your logistics.</p>
+            </div>
+            <div class="row text-center">
+                <!--<form class="header-search text-center" id="search_form" method="post" action="">-->
+                <form class="header-search text-center">
+                    <div class="header-input-float text-center"><input class="search-input" name="search_text" type="text" placeholder="Search for an event..." required></div>
+                    <div class="header-input-float"><button class="search-button" type="submit">Search&nbsp;&nbsp;&nbsp;<i class="fa fa-search"></i></button></div>
+                </form>
+            </div>
+            <div class="row text-center">
+                or <a href="{% url 'dashboard' %}">start your own event</a>
+            </div>
+    	</div>
+        <div class="row text-center down-button wow fadeIn">
+        	<a href="#about"><i class="fa fa-chevron-down fa-lg"></i></a>
+        </div>
+	</div>
+	
+    <div id="about" class="white-bg padding-top-100 padding-bottom-80">
+        <div class="row text-center intro wow fadeIn">
+            <div class="large-12 columns">
+                <i class="fa fa-users red fa-3x"></i><i class="fa fa-line-chart fa-3x red"></i><i class="fa fa-check-square-o red fa-3x"></i>
+                <h2>Logavent. Event planning made simple.</h2>
+                <p>Logavent takes all your frustrations when handling events and logistics and throws them out the window. Based on the concepts of simplicity and power, this essential app includes everything you need and more. Intrigued? You should be.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="red-bg padding-top-100 padding-bottom-80">
+        <div class="row">
+            <div class="large-4 columns wow fadeInLeft">
+            	<i class="fa fa-cogs fa-2x"></i>
+                <h5><strong>Event Planning</strong></h5>
+                <p>Plan out large-scale events with as many people as you want, in less than 15 minutes.</p>
+            </div>
+            <div class="large-4 columns wow fadeInLeft">
+            	<i class="fa fa-star-o fa-2x"></i>
+                <h5><strong>Logistics Calculator</strong></h5>
+                <p>Acquire as many logistics as possible without fearing that you will exceed your tight budget, with our very efficient budget calculator.</p>
+            </div>
+            <div class="large-4 columns wow fadeInLeft">
+            	<i class="fa fa-life-ring fa-2x"></i>
+                <h5><strong>Efficiency</strong></h5>
+                <p>With our top-notch servers and prompt customer service, you will not be disappointed with our efficiency.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="white-bg padding-top-100 padding-bottom-80" id="popular-events">
+        <div class="row wow pulse">
+            <div class="large-12 columns text-center">
+                <h2>Popular Events</h2>
+            </div>
+        </div>
+        <div class="row padding-top-60">
+        {% for event in popular_events %}
+            <div class="large-4 columns popular-event-section wow fadeInLeft">
+                <a class="wow zoomIn" href="{{ event.url }}"><div class="featured_image_wrapper" style="background-image: url('{{ MEDIA_URL }}{{ event.image }}');"></div></a>
+                <br><h4>{{ event.title }}</h4>
+                <p class="subtitle alt-font">Organized by {{ event.organiser.username }}</p>
+                <p class="description">
+                    {{ event.description|truncatechars:350 }}
+                </p>
+                <a class="subtitle alt-font" href="{{ event.url }}">Find Out More</a>
+            </div>
+        {% if forloop.counter|divisibleby:3 %}</div><div class="row padding-top-60">{% endif %}
+      {% endfor %}
+            <div class="large-12 columns text-center padding-bottom-40">
+              <br>
+              <a href="{% url 'events' %}" class="button big alt-font text-center">View all Events</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="grey-bg">
+        <div class="row padding-top-100 wow pulse">
+            <div class="large-12 columns text-center">
+                <h2>Latest Events</h2>
+            </div>
+        </div>
+        <div class="row padding-top-60 padding-bottom-80">
+          {% for event in latest_events %}
+            <div class="large-6 columns popular-event-section wow fadeIn">
+                <div class="large-6 columns">
+                    {% load static from staticfiles %}
+                    <a class="wow zoomIn" href="{{ event.url }}"><div class="featured_image_wrapper" style="background-image: url('{{ MEDIA_URL }}{{ event.image }}'); "></div></a>
+                    </div>
+                    <div class="large-6 columns">
+                    <h4>{{ event.title }}</h4>
+                    <p class="subtitle alt-font">Organized by {{ event.organiser }}</p>
+                    <a class="subtitle alt-font" href="{{ event.url }}">Find Out More</a>
+            	  </div>
+            </div>
+          {% endfor %}
+        </div>
+    </div>
+    
+    <div class="red-bg padding-top-100 padding-bottom-80">
+        <div class="row text-center">
+            <div class="large-12 large-centered columns wow fadeInLeft">
+                <h1>Want to Organise Your Own Event?</h1><br>
+                <a href="{% url 'dashboard' %}" class="button big cta alt-font">Get Started Now</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

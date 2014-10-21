@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="title-strip title-strip-dashboard">
+  <div class="row">
+    <h1>Dashboard</h1>
+  </div>
+</div>
+{% if user.username == daevent.organiser.username %}
+<div class="row padding-top-60 padding-bottom-80">
+  <div class="large-12 columns padding-bottom-40"><h2>Edit <strong>{{log.name}}</strong> from <strong>{{daevent.title}}</strong></h2></div>
+  <div class="large-12 columns text-left">
+    <form id="log_editting_form" method="post" action="{{ edit_url }}">
+      {% csrf_token %}
+      <label>Name:</label>
+      <input type="text" name="name" value="{{ log.name }}"/>
+      <label>Cost:</label>
+      <input type="number" name="cost" step="any" min="0" value="{{ log.cost }}"/>
+      <label>Quantity:</label>
+      <input type="number" name="quantity" min="1" value="{{ log.quantity }}"/>
+      <label>Procured?</label>
+      {% if log.procured %}
+      <input type="checkbox" name="procured" value="" checked="yes"/>
+      {% else %}
+      <input type="checkbox" name="procured" value=""/>
+      {% endif %}
+      <br><br>
+      <button type="submit" name="submit" class="alt-font">Save Edits</button>
+     </form>
+  </div>
+</div>
+{% else %}
+<div class="row">
+  <div class="large-12 columns text-center padding-top-60 padding-bottom-80">
+    <h2>Hey... it seems like you aren't the organiser of this event.</h2>
+    <h6><strong>No worries, just you can view the public page by clicking on the button below.</strong></h6><br>
+    <a href="{{ daevent.public_url }}" class="button alt-font">See public page</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

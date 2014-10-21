@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<!--[if IE 9]><html class="lt-ie10" lang="en" > <![endif]-->
+{% load staticfiles %}
+<html class="no-js" lang="en" >
+
+<head>
+  <link rel="icon" 
+      type="image/png" 
+      href="/static/img/Favicon.png" />
+  
+  	<meta charset="utf-8">
+  	<!-- If you delete this meta tag World War Z will become a reality -->
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  	<title>Logavent - Events and Logistics Made Easy</title>
+
+	<!-- Foundation CSS -->
+  	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.3.3/css/normalize.css">
+  	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.3.3/css/foundation.min.css">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.3.3/js/vendor/modernizr.js"></script>
+    
+    <!-- Custom CSS -->
+    <link href="{% static "css/custom.css" %}" rel="stylesheet" >
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{% static "css/animate.min.css" %}" rel="stylesheet" >
+    
+    <!-- Custom Fonts -->    
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,700,800,400,600' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+</head>
+<body>
+  <div class="preloader"><!-- Preloader from SpinKit -->
+    <div class="spinner">
+      <img class="logo" src="{% static "img/Logo.png" %}"><br><br>
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
+    </div>
+  </div>
+	<div class="fixed navbar">
+        <nav class="top-bar" data-topbar role="navigation">
+            <ul class="title-area">
+                <li class="name">
+                    <a href="{% url 'index' %}"><img class="logo" src="{% static "img/Logo.png" %}"></a>
+                </li>
+                <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+            </ul>
+    
+            <section class="top-bar-section">
+                <!-- Right Nav Section -->
+                <ul class="right">
+                    {% if user.is_authenticated %}
+                    <li><p>Welcome, {{ user }}</p></li>
+                    <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'log_out' %}">Log Out</a></li>
+                    {% else %}
+                    <li><a href="{% url 'sign_up' %}">Signup</a></li>
+                    <li><a data-reveal-id="signup-login">Login</a></li>
+                    {% endif %}
+                </ul>
+              
+                <!-- Left Nav Section -->
+                <ul class="left">
+                  <li><a href="{% url 'events' %}">Discover</a></li>
+                  {% if user.is_authenticated %}
+                  <li><a href="{% url 'create_event' %}">Create</a></li>
+                  <li><a href="{% url 'dashboard' %}">Manage</a></li>
+                  {% endif %}
+                </ul>
+            </section>
+        </nav>
+    </div>
+  
+{% block content %}{% endblock %}
+  
+  	<footer class="wow fadeIn">
+        <div class="upper-bar">
+        	<div class="row">
+                <div class="large-4 columns">
+                    <h5 class="alt-font">About Logavent</h5>
+                    <p>Run by an young and experienced team, we are devoted to bringing the most convenience and best service to our users. </p>
+                    <p>email: info@logavent.com<br>phone: +65 6235 3535</p>
+                </div>
+                <div class="large-4 columns">
+                    <h5 class="alt-font">Come Find Us</h5>
+                    <iframe height="200" frameborder="0" style="border:0; width: 90%;" src="https://www.google.com/maps/embed/v1/place?q=Raffles%20Institution%20Raffles%20Institution%20Lane%20Singapore&key=AIzaSyDE08i8tqkzzydUir1-ZAK89LlWMFNHKzg"></iframe>
+                </div>
+                <div class="large-4 columns">
+                    <h5 class="alt-font">Learn More</h5>
+                    <ul>
+                    	<li><a data-reveal-id="faq">Frequently Asked Questions</a></li>
+                        <li><a data-reveal-id="terms">Terms of Use</a></li>
+                        <li><a data-reveal-id="privacy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+        	</div>
+        </div>
+        <div class="bottom-bar">
+        	<div class="row">
+                <div class="large-6 columns">
+                    <h2><a href="#"><img class="logo" src="{% static "img/Logo.png" %}"></a></h2>
+                </div>
+                <div class="large-6 columns">
+                    <p class="right">&copy; Copyright 2014 Logavent. All Right Reserved.</p>
+                </div>
+        	</div>
+        </div> 
+	</footer>
+  
+  <!-- Modals -->
+  <div id="signup-login" class="reveal-modal small" data-reveal>
+    <div class="row">
+      <div class="large-12 columns">
+        <h2>Login</h2>
+        <p>Login to manage your events.</p>
+        <form id="login_form" method="post" action="/log_in">
+          {% csrf_token %}
+          <label>Username:</label>
+          <input type="text" name="username" value=""/>
+          <label>Password:</label>
+          <input type="password" name="password" value=""/>
+          <button type="submit" name="submit">Login</button>
+        </form>
+        <hr><br>
+        <h2>Don't have an account?</h2>
+        <p>Signup now! It takes less than a minute.</p>
+        <a href="sign_up" class="button">Signup now!</a>
+      </div>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+  </div>
+  
+  <div id="faq" class="reveal-modal large" data-reveal>
+    <div class="row">
+      <div class="large-12 columns">
+        <h1>Frequently Asked Questions</h1>
+        <p>Answers for the inquisitive.</p>
+        <h3> Q: Do I have to pay for any of the services here? </h3>
+        <p> A: No, everything here is <b>free</b> after a one-time registration. Yay for no cost! </p>
+      </div>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+  </div>
+
+  <div id="terms" class="reveal-modal large" data-reveal>
+    <div class="row">
+      <div class="large-12 columns">
+        <h2>Terms Of Use</h2>
+        <h3>
+          1. Terms
+        </h3>
+        <p>
+          By accessing this web site, you are agreeing to be bound by these 
+          web site Terms and Conditions of Use, all applicable laws and regulations, 
+          and agree that you are responsible for compliance with any applicable local 
+          laws. If you do not agree with any of these terms, you are prohibited from 
+          using or accessing this site. The materials contained in this web site are 
+          protected by applicable copyright and trade mark law.
+        </p>
+        <h3>
+          2. Use License
+        </h3>
+        <ol type="a">
+          <li>
+            Permission is granted to temporarily download one copy of the materials 
+            (information or software) on Logavent's web site for personal, 
+            non-commercial transitory viewing only. This is the grant of a license, 
+            not a transfer of title, and under this license you may not:
+            <ol type="i">
+              <li>modify or copy the materials;</li>
+              <li>use the materials for any commercial purpose, or for any public display (commercial or non-commercial);</li>
+              <li>attempt to decompile or reverse engineer any software contained on Logavent's web site;</li>
+              <li>remove any copyright or other proprietary notations from the materials; or</li>
+              <li>transfer the materials to another person or "mirror" the materials on any other server.</li>
+            </ol>
+          </li>
+          <li>
+            This license shall automatically terminate if you violate any of these restrictions and may be terminated by Logavent at any time. Upon terminating your viewing of these materials or upon the termination of this license, you must destroy any downloaded materials in your possession whether in electronic or printed format.
+          </li>
+        </ol>
+        <h3>
+          3. Disclaimer
+        </h3>
+        <ol type="a">
+          <li>
+            The materials on Logavent's web site are provided "as is". Logavent makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties, including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights. Further, Logavent does not warrant or make any representations concerning the accuracy, likely results, or reliability of the use of the materials on its Internet web site or otherwise relating to such materials or on any sites linked to this site.
+          </li>
+        </ol>
+        <h3>
+          4. Limitations
+        </h3>
+        <p>
+          In no event shall Logavent or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption,) arising out of the use or inability to use the materials on Logavent's Internet site, even if Logavent or a Logavent authorized representative has been notified orally or in writing of the possibility of such damage. Because some jurisdictions do not allow limitations on implied warranties, or limitations of liability for consequential or incidental damages, these limitations may not apply to you.
+        </p>
+        <h3>
+          5. Revisions and Errata
+        </h3>
+        <p>
+          The materials appearing on Logavent's web site could include technical, typographical, or photographic errors. Logavent does not warrant that any of the materials on its web site are accurate, complete, or current. Logavent may make changes to the materials contained on its web site at any time without notice. Logavent does not, however, make any commitment to update the materials.
+        </p>
+        <h3>
+          6. Links
+        </h3>
+        <p>
+          Logavent has not reviewed all of the sites linked to its Internet web site and is not responsible for the contents of any such linked site. The inclusion of any link does not imply endorsement by Logavent of the site. Use of any such linked web site is at the user's own risk.
+        </p>
+        <h3>
+          7. Site Terms of Use Modifications
+        </h3>
+        <p>
+          Logavent may revise these terms of use for its web site at any time without notice. By using this web site you are agreeing to be bound by the then current version of these Terms and Conditions of Use.
+        </p>
+        <h3>
+          8. Governing Law
+        </h3>
+        <p>
+          Any claim relating to Logavent's web site shall be governed by the laws of the State of Singapore without regard to its conflict of law provisions.
+        </p>
+        <p>
+          General Terms and Conditions applicable to Use of a Web Site.
+        </p>
+      </div>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+  </div>
+
+  <div id="privacy" class="reveal-modal large" data-reveal>
+    <div class="row">
+      <div class="large-12 columns">
+        <h2>Privacy Policy</h2>
+        <p>
+          Your privacy is very important to us. Accordingly, we have developed this Policy in order for you to understand how we collect, use, communicate and disclose and make use of personal information. The following outlines our privacy policy.
+        </p>
+        <p><ul>
+          <li>
+            Before or at the time of collecting personal information, we will identify the purposes for which information is being collected.
+          </li>
+          <li>
+            We will collect and use of personal information solely with the objective of fulfilling those purposes specified by us and for other compatible purposes, unless we obtain the consent of the individual concerned or as required by law.		
+          </li>
+          <li>
+            We will only retain personal information as long as necessary for the fulfillment of those purposes. 
+          </li>
+          <li>
+            We will collect personal information by lawful and fair means and, where appropriate, with the knowledge or consent of the individual concerned. 
+          </li>
+          <li>
+            Personal data should be relevant to the purposes for which it is to be used, and, to the extent necessary for those purposes, should be accurate, complete, and up-to-date. 
+          </li>
+          <li>
+            We will protect personal information by reasonable security safeguards against loss or theft, as well as unauthorized access, disclosure, copying, use or modification.
+          </li>
+          <li>
+            We will make readily available to customers information about our policies and practices relating to the management of personal information. 
+          </li>
+        </ul></p>
+        <p>
+          We are committed to conducting our business in accordance with these principles in order to ensure that the confidentiality of personal information is protected and maintained. 
+        </p>		
+      </div>
+      <a class="close-reveal-modal">&#215;</a>
+    </div>
+  </div>
+   
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.3.3/js/vendor/jquery.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.3.3/js/foundation.min.js"></script>
+    <script src="{% static "js/wow.min.js" %}"></script>
+	<script>
+    $(window).load(function() {
+      $('body').addClass('loaded');
+    });
+    
+    $(document).foundation();
+		
+		new WOW().init();
+		
+		$(function() {
+		  $('a[href*=#]:not([href=#])').click(function() {
+			if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+			  var target = $(this.hash);
+			  target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+			  if (target.length) {
+				$('html,body').animate({
+				  scrollTop: target.offset().top
+				}, 1000);
+				return false;
+			  }
+			}
+		  });
+		});
+		
+		var mywindow = $(window);
+		var mypos = mywindow.scrollTop();
+		var up = false;
+		var newscroll;
+		mywindow.scroll(function () {
+			newscroll = mywindow.scrollTop();
+			if (newscroll > mypos && !up) {
+				$('.down-button').stop().fadeOut();
+				up = !up;
+				console.log(up);
+			} else if(newscroll < mypos && up) {
+				$('.down-button').stop().fadeIn();
+				up = !up;
+			}
+			mypos = newscroll;
+		});
+		
+		$(document).scroll(function() {
+			s = $(window).scrollTop();
+			var yPos = $(window).scrollTop() / $("#header-full-width").data('speed');
+			var bgpos = '50% '+ yPos + 'px';
+			$("#header-full-width").css('background-position', bgpos ); 
+		})
+    
+    $('.featured_image_wrapper').each(function(){
+        $(this).height($(this).width() * 0.75);
+    });
+		
+    </script>
+</body>
+</html>

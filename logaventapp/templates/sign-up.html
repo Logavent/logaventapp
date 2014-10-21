@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="title-strip title-strip-signup">
+  <div class="row">
+    <h1>Signup for Logavent</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="large-12 columns text-left padding-top-60 padding-bottom-80">
+    <form id="signup_form" method="post" action="/sign_up">
+      {% csrf_token %}
+      {% if errors %}
+      {% for error in errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+      {% endif %}
+      <label>Username:</label>
+      <input type="text" name="susername" value=""/>
+      <label>Password:</label>
+      <input type="password" name="spassword" value=""/>
+      <label>Re-enter Password:</label>
+      <input type="password" name="spasswordcheck" value=""/>
+      <label>Email:</label>
+      <input type="email" name="semail" value=""/><br>
+      <button type="submit" class="alt-font" name="submit">Signup</button>
+    </form>
+  </div>
+</div>
+<div class="row">
+</div>
+{% endblock %}

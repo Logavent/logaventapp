@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}  
+<div class="title-strip title-strip-events">
+  <div class="row">
+    <h1>Events in Singapore</h1>
+  </div>
+</div>    
+
+<div class="padding-bottom-80">
+<div class="row padding-top-60">
+  {% for event in all_events %}
+  <div class="large-4 columns popular-event-section wow fadeInLeft">
+    <a class="wow zoomIn" href="{{ event.url }}"><div class="featured_image_wrapper" style="background-image: url('{{ MEDIA_URL }}{{ event.image }}');"></div></a>
+    <br><h4>{{ event.title }}</h4>
+    <p class="subtitle alt-font">Organized by {{ event.organiser.username }}</p>
+    <p class="description">
+      {{ event.description|truncatechars:350 }}
+    </p>
+    <a class="subtitle alt-font" href="{{ event.url }}">Find Out More</a>
+  </div>
+  {% if forloop.counter|divisibleby:3 %}</div><div class="row padding-top-60">{% endif %}
+  {% endfor %}</div>
+    </div>
+</div>
+</div>
+
+<div class="red-bg padding-top-100 padding-bottom-80">
+  <div class="row text-center">
+    <div class="large-12 large-centered columns wow fadeInLeft">
+      <h1>Want to Organise Your Own Event?</h1><br>
+      <a href="{% url 'dashboard' %}" class="button big cta alt-font">Get Started Now</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

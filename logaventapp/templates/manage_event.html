@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="title-strip title-strip-dashboard">
+  <div class="row">
+    <h1>Dashboard</h1>
+  </div>
+</div>
+{% if user.username == daevent.organiser.username %}
+<div class="row padding-top-60 padding-bottom-80">
+  <div class="large-12 columns padding-bottom-40"><h2>{{ daevent.title }}</h2></div>
+  {% if daevent.image != "" %}
+  <div class="large-8 columns end padding-bottom-40"><div class="featured_image_wrapper" style="background-image: url('{{ MEDIA_URL }}{{ daevent.image }}');"></div></div>
+  {% endif %}
+  <div class="large-12 columns text-left">
+    <p>Organised by <strong>{{ daevent.organiser.username }}</strong><br>
+    Going to be held on <strong>{{ daevent.eventdate }}</strong> at <strong>{{ daevent.eventtime }}</strong></p>
+    <h3>Description</h3>
+    <p>{{ daevent.description }}</p>
+    <a href="{{ daevent.edit_url }}" class="button alt-font">Edit event info</a>
+    {% if daevent.ispublic %}
+    <a href="{{ daevent.public_url }}" class="button alt-font">See public page</a>
+    {% endif %}
+    <br><br>
+    <h3>Logistics</h3>
+    <p>Budget: ${{ daevent.budget }}<br>Current Spending: ${{ spent }}<br>
+    {% if extra > 0 %}Amount left to spend: ${{ extra }}
+    {% elif extra == 0 %}Spending = Budget! Good job!
+    {% else %}Overshot budget by: ${{ extra }}
+      {% endif %}</p>
+    <table>
+        <tr>
+          <th>Name</th>
+          <th>Cost</th>
+          <th>Quantity</th>
+          <th>Total Cost</th>
+          <th>Procured?</th>
+          <th>Remove this log</th>
+        </tr>
+        {% for i in loglist %}
+        <tr>
+          <td><a href="{{ i.edit_url }}">{{ i.name }}</a></td>
+          <td>${{ i.cost }}</td>
+          <td>{{ i.quantity }}</td>
+          <td>${{ i.totalcost }}</td>
+          {% if i.procured %}
+          <td>Yep</td>
+          {% else %}
+          <td>Nope</td>
+          {% endif %}
+          <td><a href="{{ i.del_url }}">Remove {{ i.name }}</a></td>
+        </tr>
+        {% endfor %}
+      </table>
+      <a href="{{ log_create_url }}" class="button alt-font">Create New Log</a>
+    <br><br>
+    <h3>People who have registered</h3>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Handphone No.</th>
+        <th>Remove this person</th>
+      </tr>
+      {% for j in registereddudes %}
+      <tr>
+        <td>{{ j.name }}</td>
+        <td>{{ j.email }}</td>
+        <td>{{ j.hpno }}</td>
+        <td><a href="{{ j.del_url }}">Remove {{ j.name }}</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="row">
+  <div class="large-12 columns text-center padding-top-60 padding-bottom-80">
+    <h2>Hey... it seems like you aren't the organiser of this event.</h2>
+    <h6><strong>No worries, just you can view the public page by clicking on the button below.</strong></h6><br>
+    <a href="{{ daevent.public_url }}" class="button alt-font">See public page</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
